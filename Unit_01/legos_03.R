@@ -27,7 +27,7 @@ optimum <- lp(direction = "max",
                all.int = T)
 
 # Print status: 0 = success, 2 = no feasible solution
-print(optimum$status)
+print(ifelse(optimum$status == 0, "Solution Found", "Unsolvable"))
 
 # Display the optimum values for x_4p, x_3p and x_w
 best_sol <- optimum$solution
