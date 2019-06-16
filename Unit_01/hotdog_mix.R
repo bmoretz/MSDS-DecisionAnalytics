@@ -35,7 +35,8 @@ optimum <- lp(direction = "min",
                const.mat = constr,
                const.dir = constranints_direction,
                const.rhs = rhs,
-               all.int = F)
+               all.int = F,
+               compute.sens = T)
 
 # Print status: 0 = success, 2 = no feasible solution
 if (optimum$status == 2) {
