@@ -61,3 +61,9 @@ if (optimum$status == 2) {
 }
 
 rm(optimum, obj.fun, constr, constranints_direction, rhs)
+
+# Output:
+
+# Tables Chairs
+# 320 360
+# "Maximum Revenue: 4040"
