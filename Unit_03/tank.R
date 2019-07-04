@@ -1,18 +1,11 @@
-library(pracma)
+library(mosaic)
 
-tank_area <- function(x) {
-  
-}
+# f(x, y) = x^2 + y, x^2 - y^2 = 1
 
+f = makeFun(2 * (pi * r ^ 2 + 2 * pi * r * h) + 8 * (pi * r) ~ r & h)
+g = makeFun(pi*r^2*h ~ r&h)
+h = makeFun(h - 4 * r ~ r & h)
 
-## Attempt on a non-stiff equation
-# y' = y^2 - y^3, y(0) = d, 0 <= t <= 2/d, d = 0.01
-f <- function(t, y) y ^ 2 - y ^ 3
-d <- 1 / 250
-abm1 <- abm3pc(f, 0, 2 / d, d, n = 1 / d)
-abm2 <- abm3pc(f, 0, 2 / d, d, n = 2 / d)
-## Not run:
-plot(abm1$x, abm1$y, type = "l", col = "blue")
-lines(abm2$x, abm2$y, type = "l", col = "red")
-grid()
-## End(Not run)
+plotFun(f(x, y) ~ x & y, x.lim = range(0, 125), y.lim = range(0, 5), filled = FALSE)
+#plotFun(g(x, y) ~ x & y, levels = 0, x.lim = range(0, 150), y.lim = range(0, 5), filled = FALSE, add = TRUE, col = "blue")
+plotFun(h(x, y) ~ x & y, levels = 0, x.lim = range(0, 150), y.lim = range(0, 5), filled = FALSE, add = TRUE, lwd = 3, col = "red")
