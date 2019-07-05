@@ -85,3 +85,4 @@ text(.05, .020, "FR")
 points(2e-2, 2e-2, col = "blue")
 #include optimal (final) solution
 points(opt$par[1], opt$par[2], col = "red", lwd = 2)
+
