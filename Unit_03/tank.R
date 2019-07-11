@@ -1,6 +1,7 @@
 library(mosaic)
 library(data.table)
 require(graphics)
+library(nloptr)
 
 # f(x, y) = x^2 + y, x^2 - y^2 = 1
 
@@ -14,41 +15,20 @@ plotFun(g(x, y) ~ x & y, levels = 0, x.lim = range(0, 150), y.lim = range(0, 5),
 plotFun(h(x, y) ~ x & y, levels = 0, x.lim = range(0, 150), y.lim = range(0, 5), filled = FALSE, add = TRUE, lwd = 3, col = "red")
 plotFun(r(x, y) ~ x & y, levels = 0, x.lim = range(0, 150), y.lim = range(0, 5), filled = FALSE, add = TRUE, lwd = 3, col = "red")
 
-obj.fun = function(r, h) {
-  2*(pi*r^2 + 2*pi*r*h) + 8*(pi*r^2)
-}
-
-r.vals <- seq( from = 0, to = 5, by = 0.01)
-h.vals <- seq(from = 0, to = 5, by = 0.01)
-
-y_vals <- obj.fun(r.vals, h.vals)
-
-plot(y_vals)
-
-f <- function(r, h) {
+obj.fun <- function(x) {
+  r <- x[1]
+  h <- x[2]
   2 * pi * r ^ 2 + 4 * pi * r * h + 8 * (pi * r ^ 2)
 }
 
-xmin <- optimize(f, c(0, 2), tol = 0.0001, h = 4.6702)
-xmin
+eval_g_eq <- function(x) {
+  constr <- list(pi * x[1] ** 2 * x[2] - 20,
+               4 * x[1] - x[2]
+  )
+  return(list("constraints" = constr))
+}
 
-optimize(f, lower = 0, upper = 10)
+opt <- auglag(c(1, 5), fn = obj.fun, eval_g_eq = eval_g_eq, localsolver = "LBFGS",
+              lower = c(1, 1), upper = c(5, 5))
 
-r <- seq(0, 2, by = 0.01)
-h <- seq(0, 5, by = 0.025)
-
-length(r)
-length(h)
-
-d <- data.table( r, h, y = f(r,h) )
-y <- f(r, h)
-
-c1 <- 4 * r
-c2 <- h
-
-f(1.1675, 4.6702)
-
-plot(y)
-lines(y, c1)
-lines(y, c2)
-abline(v = 111.3448084, col = "red")
+opt
